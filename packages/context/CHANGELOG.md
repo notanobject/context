@@ -1,5 +1,12 @@
 # @neuledge/context
 
+## 0.3.0
+
+### Minor Changes
+
+- 173409c: Add MCP tools for searching and downloading documentation packages from registry servers. New `search_packages` and `download_package` tools allow AI agents to discover and install pre-built documentation packages. Downloaded packages are automatically available via the `get_docs` tool.
+- 2e376ff: Add native support for AsciiDoc (.adoc) and reStructuredText (.rst) documentation formats, alongside existing Markdown support. This enables indexing docs from frameworks like Spring Boot, Django, JUnit, and others that don't use Markdown.
+
 ## 0.2.3
 
 ### Patch Changes

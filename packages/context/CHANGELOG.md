@@ -1,5 +1,11 @@
 # @neuledge/context
 
+## 0.4.0
+
+### Minor Changes
+
+- 878e126: Add HTTP server transport support via `context serve --http`, enabling multiple clients on the network to connect to a single MCP server instance using the Streamable HTTP protocol
+
 ## 0.3.0
 
 ### Minor Changes

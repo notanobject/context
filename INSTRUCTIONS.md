@@ -106,6 +106,20 @@ When all tasks in a plan are done:
 
 Why: Plans contain valuable context (future ideas, design rationale, research). Embedding this in code/docs keeps it discoverable and maintained, while removing the stale plan file.
 
+## Building
+
+### macOS: `better-sqlite3` compilation failure
+
+On macOS with Node 24+, `better-sqlite3` may fail to compile with `fatal error: 'climits' file not found`. This happens when `node-gyp` can't locate the Xcode SDK C++ headers.
+
+Fix: set `SDKROOT` before install/build:
+
+```bash
+SDKROOT=$(xcrun --show-sdk-path) pnpm install
+```
+
+Use the same prefix for any command that triggers a native rebuild (`pnpm install`, `pnpm rebuild better-sqlite3`).
+
 ## Pre-PR Validation
 
 All steps must pass before submitting:
@@ -115,6 +129,12 @@ pnpm install --frozen-lockfile
 pnpm lint    # Run 'pnpm fix' to auto-fix
 pnpm build
 pnpm test
+```
+
+On macOS with Node 24+, use:
+
+```bash
+SDKROOT=$(xcrun --show-sdk-path) pnpm install --frozen-lockfile
 ```
 
 ### Checklist

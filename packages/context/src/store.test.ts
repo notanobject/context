@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import Database from "better-sqlite3";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { PackageStore, readPackageInfo } from "./store.js";
+import { getPackageFileName, PackageStore, readPackageInfo } from "./store.js";
 import { createTestDb, insertChunk, rebuildFtsIndex } from "./test-utils.js";
 
 const TEST_DIR = join(tmpdir(), `context-test-${Date.now()}`);
@@ -93,6 +93,18 @@ describe("store", () => {
       db.close();
 
       expect(() => readPackageInfo(path)).toThrow("missing name or version");
+    });
+  });
+
+  describe("getPackageFileName", () => {
+    it("keeps unscoped package names readable", () => {
+      expect(getPackageFileName("react", "18.2.0")).toBe("react@18.2.0.db");
+    });
+
+    it("encodes scoped package names safely", () => {
+      expect(getPackageFileName("@tanstack/react-query", "5.90.3")).toBe(
+        "%40tanstack%2Freact-query@5.90.3.db",
+      );
     });
   });
 

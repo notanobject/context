@@ -39,7 +39,12 @@ import {
 import { buildPackage } from "./package-builder.js";
 import { type SearchResult, search } from "./search.js";
 import { ContextServer } from "./server.js";
-import { type PackageInfo, PackageStore, readPackageInfo } from "./store.js";
+import {
+  getPackageFileName,
+  type PackageInfo,
+  PackageStore,
+  readPackageInfo,
+} from "./store.js";
 
 type SourceType = "file" | "url" | "git" | "local-dir";
 
@@ -146,7 +151,7 @@ function savePackageCopy(
     statSync(resolvedSavePath).isDirectory()
   ) {
     // Save to directory with standard name
-    destPath = join(resolvedSavePath, `${packageName}@${version}.db`);
+    destPath = join(resolvedSavePath, getPackageFileName(packageName, version));
   } else if (savePath.endsWith(".db")) {
     // Use exact path
     destPath = resolvedSavePath;
@@ -158,7 +163,7 @@ function savePackageCopy(
   } else {
     // Treat as directory, create it
     mkdirSync(resolvedSavePath, { recursive: true });
-    destPath = join(resolvedSavePath, `${packageName}@${version}.db`);
+    destPath = join(resolvedSavePath, getPackageFileName(packageName, version));
   }
 
   copyFileSync(sourcePath, destPath);
@@ -204,7 +209,7 @@ function addFromFile(source: string, options: { save?: string }): void {
 
   // Copy to data directory
   ensureDataDir();
-  const destName = `${info.name}@${info.version}.db`;
+  const destName = getPackageFileName(info.name, info.version);
   const destPath = join(DATA_DIR, destName);
 
   if (resolve(sourcePath) !== destPath) {
@@ -247,7 +252,7 @@ async function addFromUrl(
     console.log(`✓ Validated package`);
 
     // Move to final location
-    const destName = `${info.name}@${info.version}.db`;
+    const destName = getPackageFileName(info.name, info.version);
     const destPath = join(DATA_DIR, destName);
 
     // Remove old version if it exists
@@ -470,7 +475,10 @@ async function addFromGitClone(
 
     // Build the package
     ensureDataDir();
-    const outputPath = join(DATA_DIR, `${packageName}@${versionLabel}.db`);
+    const outputPath = join(
+      DATA_DIR,
+      getPackageFileName(packageName, versionLabel),
+    );
 
     console.log(`Building package...`);
     const result = buildPackage(outputPath, files, {
@@ -544,7 +552,10 @@ async function addFromLocalDir(
 
   // Build the package
   ensureDataDir();
-  const outputPath = join(DATA_DIR, `${packageName}@${versionLabel}.db`);
+  const outputPath = join(
+    DATA_DIR,
+    getPackageFileName(packageName, versionLabel),
+  );
 
   console.log(`Building package...`);
   const result = buildPackage(outputPath, files, {

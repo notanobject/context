@@ -12,7 +12,11 @@ import {
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { pipeline } from "node:stream/promises";
-import { type PackageInfo, readPackageInfo } from "./store.js";
+import {
+  getPackageFileName,
+  type PackageInfo,
+  readPackageInfo,
+} from "./store.js";
 
 const DATA_DIR = join(homedir(), ".context", "packages");
 
@@ -85,7 +89,7 @@ export async function downloadPackage(
     const info = readPackageInfo(tempPath);
 
     // Move to final location
-    const destName = `${info.name}@${info.version}.db`;
+    const destName = getPackageFileName(info.name, info.version);
     const destPath = join(DATA_DIR, destName);
 
     if (existsSync(destPath)) {

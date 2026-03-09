@@ -1,0 +1,10 @@
+name: openai
+description: "Official TypeScript and JavaScript library for the OpenAI API"
+repository: https://github.com/openai/openai-node
+
+versions:
+  - min_version: "4.0.0"
+    source:
+      type: git
+      url: https://github.com/openai/openai-node
+    tag_pattern: "v{version}"

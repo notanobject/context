@@ -36,6 +36,11 @@ import {
   sortTagsForSelection,
   type TagInfo,
 } from "./git.js";
+import {
+  GET_DOCS_TOPIC_DESCRIPTION,
+  NO_DOCUMENTATION_FOUND_MESSAGE,
+  SEARCH_PACKAGES_NAME_DESCRIPTION,
+} from "./guidance.js";
 import { buildPackage } from "./package-builder.js";
 import { type SearchResult, search } from "./search.js";
 import { ContextServer } from "./server.js";
@@ -745,7 +750,7 @@ function formatSearchResult(result: SearchResult): string {
         library: result.library,
         version: result.version,
         results: [],
-        message: "No documentation found. Try different keywords.",
+        message: NO_DOCUMENTATION_FOUND_MESSAGE,
       },
       null,
       2,
@@ -767,7 +772,7 @@ program
   .command("query")
   .description("Query documentation from an installed package")
   .argument("<library>", "Package name with version (e.g., nextjs@15.0)")
-  .argument("<topic>", "Search query (e.g., 'middleware authentication')")
+  .argument("<topic>", GET_DOCS_TOPIC_DESCRIPTION)
   .action((library: string, topic: string) => {
     const store = new PackageStore();
     loadPackages(store);
@@ -827,7 +832,10 @@ export function parseRegistryPackage(input: string): {
 program
   .command("browse")
   .description("Search for packages available on the registry server")
-  .argument("<package>", 'Package to search for (e.g., "npm/next" or "next")')
+  .argument(
+    "<package>",
+    `${SEARCH_PACKAGES_NAME_DESCRIPTION} or registry/name (e.g., "npm/next")`,
+  )
   .option(
     "--server <name>",
     "Server name from config (uses default if omitted)",

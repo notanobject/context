@@ -97,14 +97,18 @@ describe("store", () => {
   });
 
   describe("getPackageFileName", () => {
-    it("keeps unscoped package names readable", () => {
-      expect(getPackageFileName("react", "18.2.0")).toBe("react@18.2.0.db");
+    it("returns name@version.db for simple packages", () => {
+      expect(getPackageFileName("react", "18.0.0")).toBe("react@18.0.0.db");
     });
 
-    it("encodes scoped package names safely", () => {
-      expect(getPackageFileName("@tanstack/react-query", "5.90.3")).toBe(
-        "%40tanstack%2Freact-query@5.90.3.db",
+    it("replaces slashes in scoped package names", () => {
+      expect(getPackageFileName("@tanstack/react-query", "5.0.0")).toBe(
+        "@tanstack__react-query@5.0.0.db",
       );
+    });
+
+    it("handles 'latest' as version", () => {
+      expect(getPackageFileName("hono", "latest")).toBe("hono@latest.db");
     });
   });
 

@@ -75,7 +75,8 @@ export async function downloadPackage(
 
   // Download to a temp file first, then validate and move
   mkdirSync(DATA_DIR, { recursive: true });
-  const tempPath = join(DATA_DIR, `.downloading-${Date.now()}-${name}.db`);
+  const safeName = name.replaceAll("/", "__");
+  const tempPath = join(DATA_DIR, `.downloading-${Date.now()}-${safeName}.db`);
 
   try {
     const fileStream = createWriteStream(tempPath);
@@ -89,8 +90,10 @@ export async function downloadPackage(
     const info = readPackageInfo(tempPath);
 
     // Move to final location
-    const destName = getPackageFileName(info.name, info.version);
-    const destPath = join(DATA_DIR, destName);
+    const destPath = join(
+      DATA_DIR,
+      getPackageFileName(info.name, info.version),
+    );
 
     if (existsSync(destPath)) {
       unlinkSync(destPath);

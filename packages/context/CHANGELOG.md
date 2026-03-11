@@ -1,5 +1,13 @@
 # @neuledge/context
 
+## 0.5.2
+
+### Patch Changes
+
+- [`9a45146`](https://github.com/neuledge/context/commit/9a45146dba8647f130e1d91eacc9fe7be59cb4fa) Thanks [@notanobject](https://github.com/notanobject)! - Fix installed package filenames for scoped package names such as `@tanstack/react-query`.
+
+- [`6b6ed9d`](https://github.com/neuledge/context/commit/6b6ed9de6280979a92d8a122a2b7034d6149de0a) Thanks [@notanobject](https://github.com/notanobject)! - Improve MCP guidance for concise `get_docs` queries and the registry-first install workflow.
+
 ## 0.5.1
 
 ### Patch Changes
